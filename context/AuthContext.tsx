@@ -1,9 +1,9 @@
 import { useRouter, useSegments } from "expo-router";
-import React, { useState, useContext, createContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 // Definisikan tipe untuk konteks
 type AuthContextType = {
-  user: any; 
+  user: any;
   signIn: () => void;
   signOut: () => void;
 };
@@ -27,21 +27,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    // PERBAIKAN: Ubah cara pengecekan agar diterima oleh TypeScript
     if (segments.length < 1) {
       return;
     }
 
     const inAuthGroup = segments[0] === "(auth)";
 
-    if (user && inAuthGroup) {
-      router.replace("/(tabs)/home");
-    } else if (!user && !inAuthGroup) {
+    // [GEMINI] INI SATU-SATUNYA LOGIKA YANG KITA BUTUHKAN
+    // Jika user TIDAK login DAN dia TIDAK di halaman auth
+    // (misal: mencoba buka /home), paksa kembali ke login.
+    if (!user && !inAuthGroup) {
       router.replace("/(auth)/login");
     }
+
+    // [GEMINI] BLOK INI DIHAPUS
+    // if (user && inAuthGroup) {
+    //   router.replace("/(tabs)/home");
+    // }
   }, [user, segments, router]);
 
   const signIn = () => {
+    // Fungsi ini HANYA mengubah status, tidak menavigasi.
     setUser({ name: "Hilmy Baihaqi" });
   };
 
@@ -55,4 +61,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     </AuthContext.Provider>
   );
 }
-
