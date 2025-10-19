@@ -2,19 +2,18 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Aperture } from 'lucide-react-native';
-import { useAuth } from '../../context/AuthContext'; // Impor hook useAuth
+import { useAuth } from '../../context/AuthContext';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { signIn } = useAuth(); // Ambil fungsi signIn dari konteks
+  const { signIn } = useAuth();
 
   const handleLogin = () => {
     if (!email || !password) {
       Alert.alert('Error', 'Email dan password harus diisi.');
       return;
     }
-    // Panggil fungsi signIn yang sesungguhnya
     signIn();
   };
 
