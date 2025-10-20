@@ -1,6 +1,6 @@
-// app/_layout.tsx
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider } from "../context/AuthContext";
 import { useEffect, useState } from "react";
@@ -8,12 +8,16 @@ import * as SplashScreen from "expo-splash-screen";
 import CustomHeader from "../components/navigation/CustomHeader";
 import { useFonts } from "expo-font";
 import CustomSplashScreen from "../components/layout/CustomSplashScreen";
+import { setupPushNotifications } from '../services/notifications';
+import * as Notifications from 'expo-notifications';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [isAppReady, setIsAppReady] = useState(false);
+  const router = useRouter();
 
+  // Memuat semua font kustom
   const [fontsLoaded, fontError] = useFonts({
     "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
     "Poppins-ExtraLight": require("../assets/fonts/Poppins-ExtraLight.ttf"),
@@ -25,45 +29,57 @@ export default function RootLayout() {
     "Roboto-SemiBoldItalic": require("../assets/fonts/Roboto-SemiBoldItalic.ttf"),
   });
 
+  // useEffect untuk mengelola splash screen
   useEffect(() => {
-    if (fontError) {
-      console.error("===== GAGAL MEMUAT FONT: =====");
-      console.error(fontError);
-    }
+    if (fontError) console.error("Gagal memuat font:", fontError);
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
-      const timer = setTimeout(() => {
-        setIsAppReady(true);
-      }, 2000);
+      const timer = setTimeout(() => setIsAppReady(true), 2000);
       return () => clearTimeout(timer);
     }
   }, [fontsLoaded, fontError]);
+
+  useEffect(() => {
+    if (isAppReady) {
+      setupPushNotifications();
+
+      const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+        const data = response.notification.request.content.data;
+        console.log("Notifikasi diketuk! Data:", data);
+
+        if (data.screen === 'history' && data.filterKey) {
+          router.push({
+            pathname: '/(tabs)/history',
+            params: { prefillSearch: data.filterKey as string },
+          });
+        }
+      });
+
+      return () => subscription.remove();
+    }
+  }, [isAppReady, router]);
 
   if (!fontsLoaded || !isAppReady) {
     return <CustomSplashScreen />;
   }
 
   return (
-    <SafeAreaProvider>
-      <AuthProvider>
-        <Stack>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="notification"
-            options={{
-              header: () => <CustomHeader title="" />,
-            }}
-          />
-
-          {/* [FIX] TAMBAHKAN DUA BARIS INI 
-            Ini akan menyembunyikan header bawaan untuk halaman
-            kontrol dan menyelesaikan masalah tumpang tindih.
-          */}
-          <Stack.Screen name="lamp-control" options={{ headerShown: false }} />
-          <Stack.Screen name="fan-control" options={{ headerShown: false }} />
-        </Stack>
-      </AuthProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <AuthProvider>
+          <Stack>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="notification"
+              options={{ header: () => <CustomHeader title="" /> }}
+            />
+            <Stack.Screen name="lamp-control" options={{ headerShown: false }} />
+            <Stack.Screen name="fan-control" options={{ headerShown: false }} />
+          </Stack>
+        </AuthProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
+

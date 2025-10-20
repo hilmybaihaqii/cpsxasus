@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from "../../context/AuthContext";
 // [GEMINI] 1. Impor useRouter kembali
 import { useRouter } from "expo-router";
