@@ -1,17 +1,17 @@
 // app/lamp-control.tsx
 
 import { Ionicons } from "@expo/vector-icons";
-import { Power, User, Lightbulb } from "lucide-react-native";
 import { useRouter } from "expo-router";
+import { Lightbulb, Power, User } from "lucide-react-native";
 import React, { useState } from "react";
 import {
-  SafeAreaView, // [FIX] Menggunakan SafeAreaView dari react-native
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+  Switch,
   Text,
   TouchableOpacity,
   View,
-  Switch,
-  ActivityIndicator,
-  ScrollView,
 } from "react-native";
 
 // Komponen StatusItem (sudah benar)
@@ -35,18 +35,26 @@ const StatusItem: React.FC<{
 export default function LampControlScreen() {
   const router = useRouter();
 
-  // ... (State dan fungsi simulasi Anda di sini)
   const [isLampOn, setIsLampOn] = useState(true);
   const [isAutoMode, setIsAutoMode] = useState(false);
   const [motionStatus] = useState("Detected");
   const [isActionLoading, setActionLoading] = useState(false);
-  const deviceName = "Lampu Kamar";
+  const deviceName = "Lampu Kelas";
 
+  // [FIX] Mengisi logika untuk tombol power
   const handleLampToggle = () => {
-    /* ... */
+    if (isAutoMode) return; // Jika mode otomatis, tombol power tidak berfungsi
+    setActionLoading(true);
+    setTimeout(() => {
+      setIsLampOn(!isLampOn);
+      setActionLoading(false);
+    }, 500);
   };
+
+  // [FIX] Mengisi logika untuk switch mode otomatis
   const handleAutoModeToggle = () => {
-    /* ... */
+    if (isActionLoading) return; // Mencegah toggle saat aksi lain berjalan
+    setIsAutoMode(!isAutoMode);
   };
 
   const lampColorClass = isLampOn ? "text-yellow-500" : "text-gray-400";
@@ -55,9 +63,8 @@ export default function LampControlScreen() {
     motionStatus === "Detected" ? "text-green-500" : "text-gray-500";
 
   return (
-    // [FIX] SafeAreaView membungkus SEMUA, ini akan memberi padding atas
     <SafeAreaView className="flex-1 bg-light">
-      {/* Header Kustom (Fixed) - Ini TIDAK akan tumpang tindih */}
+      {/* Header Kustom (Fixed) */}
       <View className="p-5 flex-row items-center border-b border-gray-200">
         <TouchableOpacity onPress={() => router.back()} className="p-2">
           <Ionicons name="arrow-back" size={28} color="#000000" />
@@ -69,8 +76,6 @@ export default function LampControlScreen() {
 
       {/* Konten Scrollable */}
       <ScrollView contentContainerStyle={{ padding: 24 }}>
-        {/* ... (Sisa kode JSX untuk ikon lampu, tombol power, panel status, dll.) ... */}
-
         <View className="items-center my-8">
           <Lightbulb size={150} className={lampColorClass} />
         </View>
