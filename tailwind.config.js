@@ -5,20 +5,30 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Ini adalah warna tema utama Anda
-        primary: "#BA2025",
-
-        // Anda bisa tambahkan warna lain di sini
-        light: "#FFFFFF",
+        primary: "#E43636",
+        accent: "#E2DDB4",
         dark: "#000000",
-        // Anda juga bisa menambahkan warna sekunder, misal abu-abu
+        light: "#FFFFFF",
+
+        "primary-light-bg": "#FEEBEB",
+        "primary-light-border": "#FDD8D8",
         gray: {
-          100: "#EFEFEF",
-          200: "#C7C7C7",
+          200: "#E5E7EB",
+          400: "#9CA3AF",
+          700: "#374151",
+        },
+        state: {
+          on: {
+            lamp: { text: "#D97706", bg: "#FEF3C7" },
+            fan: { text: "#0891B2", bg: "#CFFAFE" },
+          },
+          off: { text: "#6B7280", bg: "#F3F4F6" },
+          alert: {
+            motion: { text: "#2563EB", bg: "#DBEAFE" }
+          }
         },
       },
       fontFamily: {
-        // Ini sudah benar, sesuai dengan nama file font Anda
         "poppins-bold": ["Poppins-Bold"],
         "poppins-extralight": ["Poppins-ExtraLight"],
         "poppins-medium": ["Poppins-Medium"],
