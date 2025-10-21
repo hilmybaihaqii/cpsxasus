@@ -2,7 +2,7 @@
 
 import { Ionicons } from "@expo/vector-icons"; // [FIX] Impor Ionicons
 import { useRouter } from "expo-router";
-import { Fan, Power, User } from "lucide-react-native"; // [FIX] Impor ikon yang benar
+import { Fan, Power, LucideUserRound as User } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,

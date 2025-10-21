@@ -2,7 +2,7 @@
 
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Lightbulb, Power, User } from "lucide-react-native";
+import { Lightbulb, Power, LucideUserRound as User } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
