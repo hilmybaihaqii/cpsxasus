@@ -1,4 +1,4 @@
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { Stack, useRouter } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -8,8 +8,8 @@ import * as SplashScreen from "expo-splash-screen";
 import CustomHeader from "../components/navigation/CustomHeader";
 import { useFonts } from "expo-font";
 import CustomSplashScreen from "../components/layout/CustomSplashScreen";
-import { setupPushNotifications } from '../services/notifications';
-import * as Notifications from 'expo-notifications';
+import { setupPushNotifications } from "../services/notifications";
+import * as Notifications from "expo-notifications";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -43,17 +43,18 @@ export default function RootLayout() {
     if (isAppReady) {
       setupPushNotifications();
 
-      const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-        const data = response.notification.request.content.data;
-        console.log("Notifikasi diketuk! Data:", data);
+      const subscription =
+        Notifications.addNotificationResponseReceivedListener((response) => {
+          const data = response.notification.request.content.data;
+          console.log("Notifikasi diketuk! Data:", data);
 
-        if (data.screen === 'history' && data.filterKey) {
-          router.push({
-            pathname: '/(tabs)/history',
-            params: { prefillSearch: data.filterKey as string },
-          });
-        }
-      });
+          if (data.screen === "history" && data.filterKey) {
+            router.push({
+              pathname: "/(tabs)/history",
+              params: { prefillSearch: data.filterKey as string },
+            });
+          }
+        });
 
       return () => subscription.remove();
     }
@@ -74,7 +75,10 @@ export default function RootLayout() {
               name="notification"
               options={{ header: () => <CustomHeader title="" /> }}
             />
-            <Stack.Screen name="lamp-control" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="lamp-control"
+              options={{ headerShown: false }}
+            />
             <Stack.Screen name="fan-control" options={{ headerShown: false }} />
           </Stack>
         </AuthProvider>
@@ -82,4 +86,3 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
-
