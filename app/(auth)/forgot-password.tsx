@@ -120,7 +120,7 @@ export default function ForgotPasswordScreen() {
         className="flex-1 justify-center p-5"
       >
         <View className="items-center mb-8">
-          <FullLogo width={280} height={60} className="mb-5" />
+          <FullLogo width={280} height={80} className="mb-5" />
           <Text className="font-poppins-medium text-2xl text-primary text-center mt-2">
             Reset Your Password
           </Text>

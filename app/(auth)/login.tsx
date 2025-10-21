@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "../../context/AuthContext";
 // [GEMINI] 1. Impor useRouter kembali
 import { useRouter } from "expo-router";
@@ -85,7 +85,7 @@ export default function LoginScreen() {
         className="flex-1 justify-center p-5"
       >
         <View className="items-center mb-8">
-          <FullLogo width={280} height={60} className="mb-5" />
+          <FullLogo width={280} height={80} className="mb-5" />
           <Text className="font-poppins-medium text-2xl text-primary text-center mt-2">
             Welcome to D&apos;mouv
           </Text>

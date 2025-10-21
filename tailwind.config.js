@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#E43636",
+        primary: "#BA2025",
         accent: "#E2DDB4",
         dark: "#000000",
         light: "#FFFFFF",
@@ -24,8 +24,8 @@ module.exports = {
           },
           off: { text: "#6B7280", bg: "#F3F4F6" },
           alert: {
-            motion: { text: "#2563EB", bg: "#DBEAFE" }
-          }
+            motion: { text: "#2563EB", bg: "#DBEAFE" },
+          },
         },
       },
       fontFamily: {
